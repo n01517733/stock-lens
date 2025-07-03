@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
+import { StockDataService } from '../shared/services/stock-data.service';
+import { Stock } from '../shared/models/home/home.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  // styles: [':host{display:contents}'], // Makes component host as if it was not there, can offer less css headaches. Use @HostBinding class approach for easier overrides.
-  // host: { class: 'contents' },
 })
 export class HomeComponent {
-  // @HostBinding('class') protected readonly class = 'contents'; // Makes component host as if it was not there, can offer less css headaches. Assumes .contents{display:contents} css class exits
-  // constructor() {}
+  searchValue: string = '';
+  searchResults: Stock[] = [];
+  favorites: Stock[] = [];
+
+  constructor(private stockDataService: StockDataService) {}
+
+  filterResult(value: Stock): void {
+    this.searchValue = value.symbol;
+
+    if (!this.searchValue) return;
+
+    this.favorites.push(value);
+  }
 }
