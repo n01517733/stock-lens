@@ -3,11 +3,14 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { HomeComponent } from './home.component';
 import { provideHttpClient } from '@angular/common/http';
+import { FavoritesComponent } from './components/favorites/favorites.component';
+import { FavoritesCardComponent } from './components/favorites/favorites-card/favorites-card.component';
+import { MatIcon } from "@angular/material/icon";
 
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [CommonModule, SharedModule, ],
+  declarations: [HomeComponent, FavoritesComponent,FavoritesCardComponent],
+  imports: [CommonModule, SharedModule, MatIcon],
   providers: [provideHttpClient()],
-  exports: [],
+  exports: [FavoritesComponent, FavoritesCardComponent],
 })
 export class HomeModule {}

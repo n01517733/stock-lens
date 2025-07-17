@@ -1,1 +1,4 @@
-<app-search (optionSelected)="filterResult($event)"></app-search>
+<div class="home-container">
+  <app-search (optionSelected)="goToDetails($event)"></app-search>
+  <app-favorites class="favorites"></app-favorites>
+</div>

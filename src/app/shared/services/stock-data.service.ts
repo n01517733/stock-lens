@@ -1,29 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
+import { API_KEY, baseUrl } from '../constants/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class StockDataService {
-  private API_KEY2 = '9S919EDC89SB0HVD'; //can this be more secure?
-  private API_KEY = 'NYDGYOTTC981VPXB';
-  private baseUrl = 'https://www.alphavantage.co/query';
-  
+
   constructor(private http: HttpClient) {}
 
   getLatestStockPrice(symbol: string) {
     const params = {
       function: 'GLOBAL_QUOTE',
-      apikey: this.API_KEY,
+      apikey: API_KEY,
       symbol,
     };
-    
-    return this.http.get<{[key: string]: any}>(`${this.baseUrl},${params}`).pipe(
+    return this.http.get<{ [key: string]: any }>(baseUrl, { params }).pipe(
       map((response) => response['Global Quote']),
       map((quote) => ({
-        symbol: quote['01. symbol'],
-        price: parseFloat(quote['05. price']),
-        change: quote['09. change'],
-        percentChange: quote['10. change percent'],
+        symbol: quote["01. symbol"],
+        high: parseFloat(quote['03. high']).toFixed(2),
+        low: parseFloat(quote['04. low']).toFixed(2),
+        price: parseFloat(quote['05. price']).toFixed(2),
+        date: quote['07. latest trading day'],
+        change: parseFloat(quote['09. change']).toFixed(2),
+        percentChange: `${parseFloat(quote['10. change percent']).toFixed(2)}%`,
       })));
   }
 
@@ -31,10 +31,10 @@ export class StockDataService {
     const params = {
       function: 'SYMBOL_SEARCH',
       keywords: search,
-      apikey: this.API_KEY,
+      apikey: API_KEY,
     };
 
-    return this.http.get<{ bestMatches: any[] }>(this.baseUrl, { params }).pipe(
+    return this.http.get<{ bestMatches: any[] }>(baseUrl, { params }).pipe(
       map((res) => {
         return res.bestMatches || []
       }),

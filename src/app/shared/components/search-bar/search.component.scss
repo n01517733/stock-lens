@@ -1,28 +1,28 @@
 .search {
-    width: 33%;
+  // width: 33%;
 }
 
 .search-bar {
-    width: 100%;
+  width: 100%;
 }
 
 .search-results-table {
-    width: 100%;
-  
-    .mat-column-symbol {
-      width: 25%;
-    }
-  
-    .mat-column-name {
-      width: 50%;
-    }
-  
-    .mat-column-favorite {
-      width: 25%;
-      text-align: center;
-  
-      mat-icon {
-        cursor: pointer;
-      }
+  width: 100%;
+
+  .mat-column-symbol {
+    width: 25%;
+  }
+
+  .mat-column-name {
+    width: 50%;
+  }
+
+  .mat-column-favorite {
+    width: 25%;
+    text-align: center;
+
+    mat-icon {
+      cursor: pointer;
     }
   }
+}
