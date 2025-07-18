@@ -1,4 +1,7 @@
 <div class="home-container">
   <app-search (optionSelected)="goToDetails($event)"></app-search>
-  <app-favorites class="favorites"></app-favorites>
+  <app-favorites
+    class="favorites"
+    (directToDetails)="goToDetails($event)"
+  ></app-favorites>
 </div>

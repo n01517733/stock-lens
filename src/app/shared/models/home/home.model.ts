@@ -9,11 +9,11 @@ export interface Stock {
 
 export interface FavoritesCard {
   symbol: string;
-  high: string;
-  low: string;
-  price: string;
-  date: string;
-  change: string;
-  percentChange:string;
-  name?: string;
+  name: string;
+  high?: string;
+  low?: string;
+  price?: string;
+  date?: string;
+  change?: string;
+  percentChange?:string;
 }

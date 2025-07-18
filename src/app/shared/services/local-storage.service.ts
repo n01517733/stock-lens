@@ -2,7 +2,6 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Stock } from '../models/home/home.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { STOCK_FAVORITES_KEY } from '../constants/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {

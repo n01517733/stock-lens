@@ -12,6 +12,7 @@ import { STOCK_FAVORITES_KEY } from '../../../../shared/constants/app.constants'
 export class FavoritesCardComponent {
   @Input() stock!: FavoritesCard;
   @Output() removeStock = new EventEmitter<FavoritesCard>();
+  @Output() directToDetails = new EventEmitter<FavoritesCard>();
 
   private readonly localStorageService = inject(LocalStorageService);
 
@@ -23,5 +24,9 @@ export class FavoritesCardComponent {
   removeCard(card: FavoritesCard) {
     this.localStorageService.remove<Stock>(STOCK_FAVORITES_KEY, card.symbol)
     this.removeStock.emit(card);
+  }
+  
+  goToDetails() {
+    this.directToDetails.emit(this.stock);
   }
 }
