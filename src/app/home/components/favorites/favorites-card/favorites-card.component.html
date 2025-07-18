@@ -1,0 +1,10 @@
+<div class="card-container">
+  <div>[{{ stock.symbol }}]</div>
+  <div>{{ stock.price }}</div>
+  <div>{{ stock.name }}</div>
+  <div>{{ stock.percentChange }}</div>
+  <div>{{ stock.date }}</div>
+  <button mat-button (click)="removeCard(stock)">
+    <mat-icon>remove_circle_outline</mat-icon>
+  </button>
+</div>

@@ -1,10 +1,21 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Stock } from '../models/home/home.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { STOCK_FAVORITES_KEY } from '../constants/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
   private readonly localStorage = inject(DOCUMENT)?.defaultView?.localStorage;
+  private storageSubjects = new Map<string, BehaviorSubject<any>>();
+
+  storage$<T>(key: string): Observable<T> {
+    if (!this.storageSubjects.has(key)) {
+      const initialValue = this.get<T>(key) ?? null;
+      this.storageSubjects.set(key, new BehaviorSubject<T>(initialValue as T));
+    }
+    return this.storageSubjects.get(key)!.asObservable();
+  }
 
   get<T>(key: string): T | null {
     const item = this.localStorage?.getItem(key);
@@ -15,29 +26,16 @@ export class LocalStorageService {
     this.localStorage?.setItem(key, JSON.stringify(value));
   }
 
-//delete below later
-  updateOld<T extends Stock>(key: string, mergeValue: T): T[] {
-    const value = this.get<T[]>(key);
-
-    if (!value) {
-       this.set(key, [mergeValue]);
-       return [mergeValue];
-    }
-    
-    const hasMergeValue = value.some(item => item.symbol === mergeValue.symbol);
-
-    const newData = hasMergeValue
-    ? value.filter(v => v.symbol !== mergeValue.symbol)
-    : [...value, mergeValue];
-
-    this.set(key, newData);
-    return newData;
+  update<T>(key: string, mergeValue: Stock[]): Stock[] {
+    this.set(key, mergeValue);
+    this.storageSubjects.get(key)?.next(mergeValue);
+    return mergeValue;
   }
 
-  update<T >(key: string, mergeValue: T[]): T[] {
-    const value = this.get<T[]>(key);
-
-    this.set(key, mergeValue);
-    return mergeValue;
+  remove<T>(key: string, itemToRemove: string): void {
+    const value = this.get<Stock[]>(key) ?? [];
+    const newValue = value.filter(item => item['symbol'] !== itemToRemove);
+    this.set(key, newValue);
+    this.storageSubjects.get(key)?.next(newValue);
   }
 }

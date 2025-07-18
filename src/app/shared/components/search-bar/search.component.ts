@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { distinctUntilChanged, filter, switchMap } from 'rxjs';
+import { Subscription, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Stock } from '../../models/home/home.model';
 import { LocalStorageService } from '../../services/local-storage.service';
+import { STOCK_FAVORITES_KEY } from '../../constants/app.constants';
 
 @Component({
   selector: 'app-search',
@@ -13,20 +14,19 @@ import { LocalStorageService } from '../../services/local-storage.service';
 })
 
 export class SearchComponent {
-  STOCK_FAVORITES_KEY = 'STOCK_FAVORITES';
+  private readonly localStorageService = inject(LocalStorageService);
+  // private readonly storageSubscription: Subscription;
   searchControl = new FormControl();
   searchResults: Stock[] = [];
   displayedColumns = ['symbol', 'name', 'favorite'];
-  favoritesList:Stock[] = [];
-  
-  private readonly localStorageService = inject(LocalStorageService);
+  favoritesList: Stock[] =  [];
 
   @Output() optionSelected = new EventEmitter<Stock>();
+  storageSubscription!: Subscription;
 
   constructor(private stockDataService: StockDataService) {}
 
   ngOnInit():void {
-    this.favoritesList = this.localStorageService.get(this.STOCK_FAVORITES_KEY) ?? []; 
     this.searchControl.valueChanges
     .pipe(
       distinctUntilChanged(),
@@ -34,10 +34,13 @@ export class SearchComponent {
     ).subscribe(results => {
         this.searchResults = results;
     });  
+    this.localStorageService.storage$<Stock[]>(STOCK_FAVORITES_KEY).pipe(filter((value)=>value !== null)).subscribe((value) => {
+        this.favoritesList = value;
+    });
   }
 
-  onOptionSelected(event: MatAutocompleteSelectedEvent){
-    this.optionSelected.emit(event.option.value);
+  onOptionSelected(row: Stock){
+    this.optionSelected.emit(row);
   }
 
   displayFn(result: any){
@@ -55,10 +58,10 @@ export class SearchComponent {
       ? this.favoritesList.filter(v => v.symbol !== element.symbol)
       : [...this.favoritesList, element];
 
-    this.localStorageService.update(this.STOCK_FAVORITES_KEY, this.favoritesList);
+    this.localStorageService.update(STOCK_FAVORITES_KEY, this.favoritesList);
   }
 
   isInFavorites(stock: Stock): boolean {
-    return this.favoritesList.some(fav => fav.symbol === stock.symbol);
+    return this.favoritesList?.some(fav => fav.symbol === stock.symbol) ?? false;
   }
 }

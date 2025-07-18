@@ -5,19 +5,15 @@ import { Stock } from '../shared/models/home/home.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
   searchValue: string = '';
   searchResults: Stock[] = [];
-  favorites: Stock[] = [];
 
   constructor(private stockDataService: StockDataService) {}
 
-  filterResult(value: Stock): void {
-    this.searchValue = value.symbol;
-
-    if (!this.searchValue) return;
-
-    this.favorites.push(value);
+  goToDetails(value: Stock): void {
+    console.log("row clicked, need to redirect to details page", value)
   }
 }
