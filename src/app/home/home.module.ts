@@ -6,10 +6,11 @@ import { provideHttpClient } from '@angular/common/http';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { FavoritesCardComponent } from './components/favorites/favorites-card/favorites-card.component';
 import { MatIcon } from "@angular/material/icon";
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [HomeComponent, FavoritesComponent,FavoritesCardComponent],
-  imports: [CommonModule, SharedModule, MatIcon],
+  imports: [CommonModule, SharedModule, MatIcon, MatProgressSpinner],
   providers: [provideHttpClient()],
   exports: [FavoritesComponent, FavoritesCardComponent],
 })

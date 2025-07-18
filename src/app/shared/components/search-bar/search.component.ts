@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subscription, distinctUntilChanged, filter, switchMap } from 'rxjs';
+import { distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Stock } from '../../models/home/home.model';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { STOCK_FAVORITES_KEY } from '../../constants/app.constants';
@@ -14,15 +13,14 @@ import { STOCK_FAVORITES_KEY } from '../../constants/app.constants';
 })
 
 export class SearchComponent {
-  private readonly localStorageService = inject(LocalStorageService);
-  // private readonly storageSubscription: Subscription;
-  searchControl = new FormControl();
-  searchResults: Stock[] = [];
-  displayedColumns = ['symbol', 'name', 'favorite'];
-  favoritesList: Stock[] =  [];
-
   @Output() optionSelected = new EventEmitter<Stock>();
-  storageSubscription!: Subscription;
+
+  public searchControl = new FormControl();
+  public searchResults: Stock[] = [];
+  public displayedColumns = ['symbol', 'name', 'favorite'];
+  public favoritesList: Stock[] =  [];
+  
+  private readonly localStorageService = inject(LocalStorageService);
 
   constructor(private stockDataService: StockDataService) {}
 
@@ -52,13 +50,8 @@ export class SearchComponent {
   }
 
   updateFavorites(element: Stock): void {
-    const hasElement = this.favoritesList.some(item => item.symbol === element.symbol);
-
-    this.favoritesList = hasElement
-      ? this.favoritesList.filter(v => v.symbol !== element.symbol)
-      : [...this.favoritesList, element];
-
-    this.localStorageService.update(STOCK_FAVORITES_KEY, this.favoritesList);
+    const isInFavorite = this.isInFavorites(element);
+    isInFavorite ? this.stockDataService.removeStock(element.symbol) : this.stockDataService.addStock(element);
   }
 
   isInFavorites(stock: Stock): boolean {
