@@ -1,13 +1,59 @@
-<div class="card-container">
-  <div class="card-wrapper">
-    <div>[{{ stock.symbol }}]</div>
-    <div>${{ stock.price ?? "--.--" }}</div>
-    <div>{{ stock.name }}</div>
-    <div>{{ stock.percentChange ?? "--.--%" }}</div>
-    <div>{{ stock.date ?? "MM/DD/YYYY" }}</div>
-    <button mat-button (click)="removeCard(stock)">
-      <mat-icon>remove_circle_outline</mat-icon>
-    </button>
-    <button mat-button (click)="goToDetails()">See more details</button>
-  </div>
+<div
+  class="card-grid"
+  (click)="goToDetails()"
+  [class.disabled]="!stockDataAvailable"
+>
+  <mat-card class="stock-card">
+    <mat-card-content
+      class="card-content"
+      matTooltip="See more details for [{{ stock.symbol }}]"
+      matTooltipPosition="right"
+    >
+      <div class="row space-between">
+        <div class="column">
+          <div class="label">Ticker</div>
+          <div class="value">[{{ stock.symbol }}]</div>
+        </div>
+        <div class="column">
+          <div class="label">Current Price</div>
+          <div class="value">${{ stock.price ?? "--.--" }}</div>
+        </div>
+      </div>
+
+      <div class="stock-name">
+        <div class="label">Stock Name</div>
+        <div class="truncate">{{ stock.name }}</div>
+      </div>
+
+      <div class="row space-between">
+        <div class="column">
+          <div class="label">Today's High</div>
+          <div class="value">{{ stock.high ?? "$--.--" }}</div>
+        </div>
+        <div class="column">
+          <div class="label">Today's Low</div>
+          <div class="value">{{ stock.low ?? "$--.--" }}</div>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="row space-between actions">
+      <div class="date-info">
+        <div class="label">
+          <i
+            >Details based on
+            {{ !stock.date ? "MM.DD.YYYY" : formatDate(stock.date) }}</i
+          >
+        </div>
+      </div>
+      <button
+        mat-icon-button
+        (click)="removeCard(stock); $event.stopPropagation()"
+        [disabled]="!stockDataAvailable"
+        matTooltip="Remove from favorites"
+      >
+        <mat-icon>remove_circle_outline</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

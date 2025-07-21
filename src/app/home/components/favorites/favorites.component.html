@@ -1,7 +1,6 @@
 <div class="favorites-container">
   <div>Favorites</div>
   <div class="favorites-card-wrapper">
-    <div class="favorites-card"></div>
     <div *ngIf="!favoritesList.length">no stocks</div>
     <app-favorites-card
       *ngFor="let stock of favoritesLatestPrice"

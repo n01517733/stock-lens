@@ -21,6 +21,11 @@ export class FavoritesCardComponent {
   ngOnInit() {
     // console.log("card", this.stock)
   }
+  
+  get stockDataAvailable(): boolean {
+    return !!this.stock?.high;
+  }
+
   removeCard(card: FavoritesCard) {
     this.localStorageService.remove<Stock>(STOCK_FAVORITES_KEY, card.symbol)
     this.removeStock.emit(card);
@@ -28,5 +33,10 @@ export class FavoritesCardComponent {
   
   goToDetails() {
     this.directToDetails.emit(this.stock);
+  }
+
+  formatDate(dateStr: string): string {
+    const [year, month, day] = dateStr.split('-');
+    return `${month}.${day}.${year}`;
   }
 }
