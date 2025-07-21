@@ -1,8 +1,20 @@
 .home-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr; // default: mobile layout (1 column)
     gap: 1rem;
+    height: 100%;
+  
     .favorites {
-        grid-column: span 2;
+      width: 100%;
+      overflow-y: auto;
+      grid-column: span 1; // mobile default
     }
-}
+  
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+  
+      .favorites {
+        grid-column: span 2;
+      }
+    }
+  }
