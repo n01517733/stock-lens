@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { combineLatest, filter, map, mergeMap, of } from 'rxjs';
 import { FavoritesCard, Stock } from '../../../shared/models/home/home.model';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
@@ -12,7 +12,6 @@ import { STOCK_FAVORITES_KEY } from '../../../shared/constants/app.constants';
 })
 export class FavoritesComponent {  
   @Input() isMobile: boolean = false;
-  @Output() directToDetails = new EventEmitter<Stock>();
 
   public favoritesList: Stock[] = [];
   public favoritesLatestPrice: FavoritesCard[] = [];
@@ -71,10 +70,5 @@ export class FavoritesComponent {
   removeStock(stock: FavoritesCard){
     this.favoritesList = this.favoritesList.filter(s => s.symbol !== stock.symbol);
     this.favoritesLatestPrice = this.favoritesLatestPrice.filter(s => s.symbol !== stock.symbol);
-  }
-
-  goToDetails(stock: FavoritesCard){
-    const item = this.favoritesList.find(item => item.symbol === stock.symbol);
-    this.directToDetails.emit(item);
   }
 }

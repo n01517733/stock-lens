@@ -29,12 +29,26 @@
     >
       <ng-container matColumnDef="symbol">
         <th mat-header-cell *matHeaderCellDef>Symbol</th>
-        <td mat-cell *matCellDef="let element">[{{ element.symbol }}]</td>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="onOptionSelected(element)"
+          class="hover"
+        >
+          [{{ element.symbol }}]
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="onOptionSelected(element)"
+          class="hover"
+        >
+          {{ element.name }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="favorite">
@@ -43,16 +57,17 @@
           <mat-icon
             [fontIcon]="isInFavorites(element) ? 'star' : 'star_outline'"
             (click)="updateFavorites(element); $event.stopPropagation()"
+            [matTooltip]="
+              isInFavorites(element)
+                ? 'Remove from favorites'
+                : 'Add to favorites'
+            "
           ></mat-icon>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        (click)="onOptionSelected(row)"
-      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
 </div>

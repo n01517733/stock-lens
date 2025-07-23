@@ -4,23 +4,18 @@
 </header>
 <div class="home-container">
   <div class="search">
-    <app-search
-      [isMobile]="true"
-      [drawerOpen]="this.drawerOpen"
-      (optionSelected)="goToDetails($event)"
-    ></app-search>
+    <app-search [isMobile]="true" [drawerOpen]="this.drawerOpen"></app-search>
   </div>
   <div class="favorites">
     <app-favorites
       *ngIf="!isMobile"
       [ngClass]="{ 'favorites-desktop': !isMobile }"
-      (directToDetails)="goToDetails($event)"
     ></app-favorites>
   </div>
 </div>
 
 <div *ngIf="isMobile" class="favorites-drawer" [class.open]="drawerOpen">
-  <div class="drawer-header" (click)="toggleDrawer()">
+  <div class="drawer-header hover" (click)="toggleDrawer()">
     <span class="drawer-title">
       Favorites
       <span class="drawer-sublabel"
@@ -31,9 +26,6 @@
   </div>
 
   <div class="drawer-body" *ngIf="drawerOpen">
-    <app-favorites
-      [isMobile]="true"
-      (directToDetails)="goToDetails($event)"
-    ></app-favorites>
+    <app-favorites [isMobile]="true"></app-favorites>
   </div>
 </div>

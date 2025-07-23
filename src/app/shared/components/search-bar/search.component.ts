@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
 import { Stock } from '../../models/home/home.model';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { STOCK_FAVORITES_KEY } from '../../constants/app.constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -17,7 +18,6 @@ export class SearchComponent {
     this._drawerOpen = value;
   }
   @Input() isMobile: boolean = false;
-  @Output() optionSelected = new EventEmitter<Stock>();
 
   public searchControl = new FormControl();
   public searchResults: Stock[] = [];
@@ -28,7 +28,7 @@ export class SearchComponent {
   
   private readonly localStorageService = inject(LocalStorageService);
 
-  constructor(private stockDataService: StockDataService) {}
+  constructor(private stockDataService: StockDataService, private router: Router) {}
 
   ngOnInit():void {
     this.searchControl.valueChanges
@@ -46,7 +46,7 @@ export class SearchComponent {
   }
 
   onOptionSelected(row: Stock){
-    this.optionSelected.emit(row);
+    this.router.navigate(['/', row.symbol]);
   }
 
   displayFn(result: any){

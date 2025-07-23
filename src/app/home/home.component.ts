@@ -23,10 +23,6 @@ export class HomeComponent {
         this.isMobile = result.matches;
       });
   }
-
-  goToDetails(value: Stock): void {
-    console.log("row clicked, need to redirect to details page", value)
-  }
   
   toggleDrawer() {
     this.drawerOpen = !this.drawerOpen;
