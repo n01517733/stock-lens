@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [SearchComponent],
@@ -16,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatTableModule,
+    MatTooltip
   ],
   exports: [SearchComponent],
 })

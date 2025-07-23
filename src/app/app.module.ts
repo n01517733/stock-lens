@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { StockDetailsModule } from './stock-details/stock-details.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     BrowserModule,
     AppRoutingModule,
     SharedModule,
-    HomeModule
+    HomeModule,
+    StockDetailsModule
   ],
   providers: [
     provideAnimationsAsync()

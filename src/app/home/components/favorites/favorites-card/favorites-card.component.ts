@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FavoritesCard, Stock } from '../../../../shared/models/home/home.model';
 import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { STOCK_FAVORITES_KEY } from '../../../../shared/constants/app.constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorites-card',
@@ -12,15 +13,10 @@ import { STOCK_FAVORITES_KEY } from '../../../../shared/constants/app.constants'
 export class FavoritesCardComponent {
   @Input() stock!: FavoritesCard;
   @Output() removeStock = new EventEmitter<FavoritesCard>();
-  @Output() directToDetails = new EventEmitter<FavoritesCard>();
 
   private readonly localStorageService = inject(LocalStorageService);
 
-  // constructor() {}
-
-  ngOnInit() {
-    // console.log("card", this.stock)
-  }
+  constructor(private router: Router) {}
   
   get stockDataAvailable(): boolean {
     return !!this.stock?.high;
@@ -32,7 +28,7 @@ export class FavoritesCardComponent {
   }
   
   goToDetails() {
-    this.directToDetails.emit(this.stock);
+    this.router.navigate(['/', this.stock.symbol]);
   }
 
   formatDate(dateStr: string): string {
