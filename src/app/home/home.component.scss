@@ -53,6 +53,21 @@
     background-color: #f4f3f6;
     font-weight: bold;
     cursor: pointer;
+
+    &:hover {
+      background-color: #e8e7ec;
+    }
+
+    .drawer-title {
+      font-size: 16px;
+  
+      .drawer-sublabel {
+        font-size: 13px;
+        font-weight: normal;
+        color: #666;
+        margin-left: 6px;
+      }
+    }
   }
 
   .drawer-body {
@@ -69,4 +84,8 @@
     max-height: 48px;
     overflow: hidden;
   }
+
+  
+  
+  
 }

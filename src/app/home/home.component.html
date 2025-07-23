@@ -21,7 +21,12 @@
 
 <div *ngIf="isMobile" class="favorites-drawer" [class.open]="drawerOpen">
   <div class="drawer-header" (click)="toggleDrawer()">
-    <span>Favorites</span>
+    <span class="drawer-title">
+      Favorites
+      <span class="drawer-sublabel"
+        >(Click to {{ drawerOpen ? "Collapse" : "Expand" }})</span
+      >
+    </span>
     <mat-icon>{{ drawerOpen ? "expand_more" : "expand_less" }}</mat-icon>
   </div>
 
