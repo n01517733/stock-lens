@@ -1,9 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Segoe UI', sans-serif; }
 button {
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 1rem;
+    color: rgba(0, 0, 0, 0.54);
+    background-color: #f4f3f6;
+    align-content: center;
+  
+    .empty-text-primary {
+      margin: 0.5rem 0 0;
+    }
+  
+    .empty-text-secondary {
+      margin-top: 0.25rem;
+      font-size: 14px;
+    }
 }

@@ -1,7 +1,34 @@
+<header class="header">
+  <mat-icon>query_stats</mat-icon>
+  <div class="brand">StockLens</div>
+</header>
 <div class="home-container">
-  <app-search (optionSelected)="goToDetails($event)"></app-search>
-  <app-favorites
-    class="favorites"
-    (directToDetails)="goToDetails($event)"
-  ></app-favorites>
+  <div class="search">
+    <app-search
+      [isMobile]="true"
+      [drawerOpen]="this.drawerOpen"
+      (optionSelected)="goToDetails($event)"
+    ></app-search>
+  </div>
+  <div class="favorites">
+    <app-favorites
+      *ngIf="!isMobile"
+      [ngClass]="{ 'favorites-desktop': !isMobile }"
+      (directToDetails)="goToDetails($event)"
+    ></app-favorites>
+  </div>
+</div>
+
+<div *ngIf="isMobile" class="favorites-drawer" [class.open]="drawerOpen">
+  <div class="drawer-header" (click)="toggleDrawer()">
+    <span>Favorites</span>
+    <mat-icon>{{ drawerOpen ? "expand_more" : "expand_less" }}</mat-icon>
+  </div>
+
+  <div class="drawer-body" *ngIf="drawerOpen">
+    <app-favorites
+      [isMobile]="true"
+      (directToDetails)="goToDetails($event)"
+    ></app-favorites>
+  </div>
 </div>

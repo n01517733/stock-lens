@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
@@ -13,12 +13,18 @@ import { STOCK_FAVORITES_KEY } from '../../constants/app.constants';
 })
 
 export class SearchComponent {
+  @Input() set drawerOpen(value: boolean) {
+    this._drawerOpen = value;
+  }
+  @Input() isMobile: boolean = false;
   @Output() optionSelected = new EventEmitter<Stock>();
 
   public searchControl = new FormControl();
   public searchResults: Stock[] = [];
   public displayedColumns = ['symbol', 'name', 'favorite'];
   public favoritesList: Stock[] =  [];
+  public noSearchResults = false;
+  public _drawerOpen = false;
   
   private readonly localStorageService = inject(LocalStorageService);
 
@@ -30,8 +36,10 @@ export class SearchComponent {
       distinctUntilChanged(),
       switchMap(value => this.stockDataService.getSearchResults(value))
     ).subscribe(results => {
-        this.searchResults = results;
-    });  
+      this.searchResults = results;
+      this.noSearchResults = this.searchResults.length === 0 ;
+    });
+
     this.localStorageService.storage$<Stock[]>(STOCK_FAVORITES_KEY).pipe(filter((value)=>value !== null)).subscribe((value) => {
         this.favoritesList = value;
     });

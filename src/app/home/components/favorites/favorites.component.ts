@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { combineLatest, filter, map, of, switchMap } from 'rxjs';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { combineLatest, filter, map, mergeMap, of } from 'rxjs';
 import { FavoritesCard, Stock } from '../../../shared/models/home/home.model';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { StockDataService } from '../../../shared/services/stock-data.service';
@@ -11,6 +11,7 @@ import { STOCK_FAVORITES_KEY } from '../../../shared/constants/app.constants';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent {  
+  @Input() isMobile: boolean = false;
   @Output() directToDetails = new EventEmitter<Stock>();
 
   public favoritesList: Stock[] = [];
@@ -24,7 +25,7 @@ export class FavoritesComponent {
       .storage$<Stock[]>(STOCK_FAVORITES_KEY)
       .pipe(
         filter((favorites): favorites is Stock[] => favorites !== null),
-        switchMap(favorites => {
+        mergeMap(favorites => {
           this.favoritesList = favorites;
 
           // Keep only prices that are still in the favorites list
@@ -62,11 +63,7 @@ export class FavoritesComponent {
         // Replace placeholder with actual data
         newPrices.forEach(newPrice => {
           const index = this.favoritesLatestPrice.findIndex(p => p.symbol === newPrice.symbol);
-          if (index > -1) {
-            this.favoritesLatestPrice[index] = newPrice;
-          } else {
-            this.favoritesLatestPrice.push(newPrice);
-          }
+          (index > -1) ? this.favoritesLatestPrice[index] = newPrice : this.favoritesLatestPrice.push(newPrice);
         });
       });
   }
