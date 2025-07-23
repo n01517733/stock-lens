@@ -1,12 +1,16 @@
-<div class="favorites-container">
-  <div>Favorites</div>
-  <div class="favorites-card-wrapper">
-    <div *ngIf="!favoritesList.length">no stocks</div>
-    <app-favorites-card
-      *ngFor="let stock of favoritesLatestPrice"
-      [stock]="stock"
-      (removeStock)="removeStock($event)"
-      (directToDetails)="goToDetails(stock)"
-    ></app-favorites-card>
+<div class="favorites-card-wrapper">
+  <div *ngIf="!favoritesList.length">
+    <div class="empty-state">
+      <h3 class="empty-text-primary">No favorites yet</h3>
+      <p class="empty-text-secondary">
+        Use the search bar to add stocks to your favorites list.
+      </p>
+    </div>
   </div>
+  <app-favorites-card
+    *ngFor="let stock of favoritesLatestPrice"
+    [stock]="stock"
+    (removeStock)="removeStock($event)"
+    (directToDetails)="goToDetails(stock)"
+  ></app-favorites-card>
 </div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { StockDataService } from '../shared/services/stock-data.service';
 import { Stock } from '../shared/models/home/home.model';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +10,25 @@ import { Stock } from '../shared/models/home/home.model';
 export class HomeComponent {
   searchValue: string = '';
   searchResults: Stock[] = [];
+  isMobile: boolean = false;
+  drawerOpen: boolean = false;
 
-  constructor(private stockDataService: StockDataService) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver
+    ) {}
+
+  ngOnInit(){
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+      });
+  }
 
   goToDetails(value: Stock): void {
     console.log("row clicked, need to redirect to details page", value)
+  }
+  
+  toggleDrawer() {
+    this.drawerOpen = !this.drawerOpen;
   }
 }
