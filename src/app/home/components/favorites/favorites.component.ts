@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { combineLatest, filter, map, mergeMap, of } from 'rxjs';
-import { FavoritesCard, Stock } from '../../../shared/models/home/home.model';
+import { FavoritesCard, Stock } from '../../../shared/models/home/app.model';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { StockDataService } from '../../../shared/services/stock-data.service';
 import { STOCK_FAVORITES_KEY } from '../../../shared/constants/app.constants';
@@ -27,7 +27,6 @@ export class FavoritesComponent {
         mergeMap(favorites => {
           this.favoritesList = favorites;
 
-          // Keep only prices that are still in the favorites list
           this.favoritesLatestPrice = this.favoritesLatestPrice.filter(p =>
             favorites.some(fav => fav.symbol === p.symbol)
           );
@@ -38,7 +37,6 @@ export class FavoritesComponent {
 
           if (newSymbols.length === 0) return of([]);
 
-          // Add placeholders
           this.favoritesLatestPrice.push(
             ...newSymbols.map(stock => ({
               symbol: stock.symbol,
@@ -59,7 +57,6 @@ export class FavoritesComponent {
         })
       )
       .subscribe(newPrices => {
-        // Replace placeholder with actual data
         newPrices.forEach(newPrice => {
           const index = this.favoritesLatestPrice.findIndex(p => p.symbol === newPrice.symbol);
           (index > -1) ? this.favoritesLatestPrice[index] = newPrice : this.favoritesLatestPrice.push(newPrice);

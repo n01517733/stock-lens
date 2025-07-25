@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
-import { Stock } from '../../models/home/home.model';
+import { Stock } from '../../models/home/app.model';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { STOCK_FAVORITES_KEY } from '../../constants/app.constants';
 import { Router } from '@angular/router';

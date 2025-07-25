@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Stock } from '../shared/models/home/home.model';
+import { Stock } from '../shared/models/home/app.model';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({

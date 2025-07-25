@@ -1,5 +1,5 @@
 <div class="details-wrapper">
-  <header class="header">
+  <header class="header space-between">
     <div
       matTooltip="Click to return home"
       class="home-wrapper hover"
@@ -8,5 +8,87 @@
       <mat-icon>query_stats</mat-icon>
       <div class="brand">StockLens</div>
     </div>
+
+    <span class="label">
+      Details as of
+      {{ !quote?.date ? "MM.DD.YYYY" : formatDate(quote.date) }}
+    </span>
   </header>
+
+  <div *ngIf="isLoading" class="empty-state spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading && noStockData">
+    <div class="empty-state">
+      <h3 class="empty-text-primary">Stock not found</h3>
+      <p class="empty-text-secondary">
+        Unable to retrieve details for [{{ symbol | uppercase }}]. Please check
+        the symbol and try again.
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !noStockData" class="stock-details">
+    <div class="title">
+      <div class="">
+        <div class="label">Ticker</div>
+        <div class="value">[{{ quote.symbol }}]</div>
+      </div>
+      <div class="">
+        <div class="label">Company Name</div>
+        <div class="value">{{ overview.name ?? "--.--" }}</div>
+      </div>
+    </div>
+
+    <div class="row space-between">
+      <div class="column">
+        <div class="label">Current Price</div>
+        <div class="value">${{ quote.price ?? "--.--" }}</div>
+      </div>
+      <div class="column">
+        <div class="label">Trade Volume</div>
+        <div class="value">${{ quote.volume ?? "--.--" }}</div>
+      </div>
+
+      <div class="column">
+        <div class="label">Today's High</div>
+        <div class="value">${{ quote.high ?? "--.--" }}</div>
+      </div>
+      <div class="column">
+        <div class="label">Today's Low</div>
+        <div class="value">${{ quote.low ?? "--.--" }}</div>
+      </div>
+
+      <div class="column">
+        <div class="label">Day's Delta</div>
+        <div class="value">{{ quote.change ?? "--" }}</div>
+      </div>
+      <div class="column">
+        <div class="label">Day's Delta Percent</div>
+        <div class="value">{{ quote.percentChange ?? "--" }}%</div>
+      </div>
+
+      <div class="column">
+        <div class="label">52-Week High</div>
+        <div class="value">${{ overview.yearHigh ?? "--.--" }}</div>
+      </div>
+      <div class="column">
+        <div class="label">52-Week Low</div>
+        <div class="value">${{ overview.yearLow ?? "--.--" }}</div>
+      </div>
+    </div>
+
+    <div class="stock-description">
+      <div class="label">Company Description</div>
+      <div class="value">
+        {{ overview.companyDescription ?? "No description available." }}
+      </div>
+    </div>
+    <p class="disclaimer">
+      <strong>*Note:</strong> Stock details may not be available for all
+      tickers. Some symbols may have limited or missing data depending on
+      availability from the data provider.
+    </p>
+  </div>
 </div>
