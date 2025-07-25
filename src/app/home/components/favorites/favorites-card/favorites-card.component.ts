@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FavoritesCard, Stock } from '../../../../shared/models/home/home.model';
+import { FavoritesCard, Stock } from '../../../../shared/models/home/app.model';
 import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { STOCK_FAVORITES_KEY } from '../../../../shared/constants/app.constants';
 import { Router } from '@angular/router';

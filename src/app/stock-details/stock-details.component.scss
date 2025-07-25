@@ -1,14 +1,86 @@
 .header {
     padding: 16px;
     font-size: 24px;
-    font-weight: bold;
     border-bottom: 1px solid #ddd;
     background-color: white;
     position: sticky;
     top: 0;
     z-index: 10;
     display: flex;
+    max-width: calc(100vw - 32px);
+    min-width: 340px;  
+    margin-bottom: 12px;
+  
     .home-wrapper {
-        display: flex;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
     }
+  }
+
+  .title {
+    display: flex;
+    gap: 24px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+
+    @media (min-width: 672px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+  }
+  
+  .label {
+    font-size: 14px;
+    color: #666;
+    max-width: 100%;
+  }
+  
+  .value {
+    font-weight: 500;
+    font-size: 20px;
+    max-width: 100%;
+  }
+  
+  .stock-details {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 12px;
+    margin: 12px;
+  }
+  
+  .stock-description {
+    .label {
+      margin-bottom: 4px;
+    }
+  
+    .value {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+
+ .disclaimer {
+    font-size: 12px;
+    color: #888;
+    margin-top: 12px;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 110px);
+    margin: 12px;
   }

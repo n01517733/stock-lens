@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { API_KEY, STOCK_FAVORITES_KEY, baseUrl } from '../constants/app.constants';
-import { Stock } from '../models/home/home.model';
+import { Stock } from '../models/home/app.model';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({ providedIn: 'root' })
@@ -12,6 +12,21 @@ export class StockDataService {
   public favorites$ = this.favoritesSubject.asObservable(); //should this be in a method
 
   constructor(private http: HttpClient) {}
+
+  getStockDetails(symbol: string) {
+    const params = {
+      function: 'OVERVIEW',
+      apikey: API_KEY,
+      symbol,
+    };
+    return this.http.get<{ [key: string]: any }>(baseUrl, { params }).pipe(
+      map((details) => ({
+        name: details['Name'],
+        companyDescription: details['Description'],
+        yearHigh: details['52WeekHigh'],
+        yearLow: details['52WeekLow'] ,
+        })));
+  }
 
   getLatestStockPrice(symbol: string) {
     const params = {
@@ -23,12 +38,13 @@ export class StockDataService {
       map((response) => response['Global Quote']),
       map((quote) => ({
         symbol: quote["01. symbol"],
-        high: parseFloat(quote['03. high']).toFixed(2),
-        low: parseFloat(quote['04. low']).toFixed(2),
-        price: parseFloat(quote['05. price']).toFixed(2),
+        high: this.checkForNaN(quote['03. high']),
+        low: this.checkForNaN(quote['04. low']),
+        price: this.checkForNaN(quote['05. price']),
+        volume: quote['06. volume'],
         date: quote['07. latest trading day'],
-        change: parseFloat(quote['09. change']).toFixed(2),
-        percentChange: `${parseFloat(quote['10. change percent']).toFixed(2)}%`,
+        change: this.checkForNaN(quote['09. change']),
+        percentChange: this.checkForNaN(quote['10. change percent']),
       })));
   }
 
@@ -57,7 +73,7 @@ export class StockDataService {
     if (!current.some(s => s.symbol === stock.symbol)) {
       const updated = [...current, stock];
       this.localStorageService.update(STOCK_FAVORITES_KEY, updated);
-      this.favoritesSubject.next(updated); // triggers UI immediately
+      this.favoritesSubject.next(updated);
     }
   }
   
@@ -71,5 +87,10 @@ export class StockDataService {
   getFavorites(): Stock[] {
     const favorites = this.localStorageService.get<Stock[]>(STOCK_FAVORITES_KEY);
     return Array.isArray(favorites) ? favorites : [];
+  }
+
+  checkForNaN(value: string): string | undefined {
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? undefined : parsed.toFixed(2);
   }
 }
