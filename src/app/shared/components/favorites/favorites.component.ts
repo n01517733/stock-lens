@@ -1,9 +1,9 @@
 import { Component, Input, inject } from '@angular/core';
 import { combineLatest, filter, map, mergeMap, of } from 'rxjs';
-import { FavoritesCard, Stock } from '../../../shared/models/home/app.model';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { StockDataService } from '../../../shared/services/stock-data.service';
-import { STOCK_FAVORITES_KEY } from '../../../shared/constants/app.constants';
+import { FavoritesCard, Stock } from '../../models/home/app.model';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { StockDataService } from '../../services/stock-data.service';
+import { STOCK_FAVORITES_KEY } from '../../constants/app.constants';
 
 @Component({
   selector: 'app-favorites',
@@ -33,11 +33,11 @@ export class FavoritesComponent {
 
           const newSymbols = favorites.filter(
             stock => !this.favoritesLatestPrice.some(p => p.symbol === stock.symbol)
-          );
+          ).reverse();
 
           if (newSymbols.length === 0) return of([]);
 
-          this.favoritesLatestPrice.push(
+          this.favoritesLatestPrice.unshift(
             ...newSymbols.map(stock => ({
               symbol: stock.symbol,
               name: stock.name,
@@ -59,7 +59,7 @@ export class FavoritesComponent {
       .subscribe(newPrices => {
         newPrices.forEach(newPrice => {
           const index = this.favoritesLatestPrice.findIndex(p => p.symbol === newPrice.symbol);
-          (index > -1) ? this.favoritesLatestPrice[index] = newPrice : this.favoritesLatestPrice.push(newPrice);
+          (index > -1) ? this.favoritesLatestPrice[index] = newPrice : this.favoritesLatestPrice.unshift(newPrice);
         });
       });
   }
