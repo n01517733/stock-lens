@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { map } from 'rxjs';
 import { API_KEY, STOCK_FAVORITES_KEY, baseUrl } from '../constants/app.constants';
 import { Stock } from '../models/home/app.model';
 import { LocalStorageService } from './local-storage.service';
@@ -8,8 +8,6 @@ import { LocalStorageService } from './local-storage.service';
 @Injectable({ providedIn: 'root' })
 export class StockDataService {
   private readonly localStorageService = inject(LocalStorageService);
-  private favoritesSubject = new BehaviorSubject<Stock[]>([]);
-  public favorites$ = this.favoritesSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -73,7 +71,6 @@ export class StockDataService {
     if (!current.some(s => s.symbol === stock.symbol)) {
       const updated = [...current, stock];
       this.localStorageService.update(STOCK_FAVORITES_KEY, updated);
-      this.favoritesSubject.next(updated);
     }
   }
   
@@ -81,7 +78,6 @@ export class StockDataService {
     const favorites = this.localStorageService.get<Stock[]>(STOCK_FAVORITES_KEY) ?? [];
     const updatedFavorites = favorites.filter(item => item.symbol !== symbol);
     this.localStorageService.update(STOCK_FAVORITES_KEY, updatedFavorites);
-    this.favoritesSubject.next(updatedFavorites);
   }
 
   getFavorites(): Stock[] {
