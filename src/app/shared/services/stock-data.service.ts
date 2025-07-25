@@ -9,7 +9,7 @@ import { LocalStorageService } from './local-storage.service';
 export class StockDataService {
   private readonly localStorageService = inject(LocalStorageService);
   private favoritesSubject = new BehaviorSubject<Stock[]>([]);
-  public favorites$ = this.favoritesSubject.asObservable(); //should this be in a method
+  public favorites$ = this.favoritesSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
